@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Contact</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Nunito:wght@200;300;400;600;700;800&display=swap');
+
+    * {
+      box-sizing: border-box;
+      font-family: 'Nunito', sans-serif;
+    }
+
+    body {
+      margin: 0;
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background-image: url(contact.avif);
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+    }
+
+    .contact_us {
+      background-color: rgba(0, 0, 0, 0.8);
+      padding: 40px;
+      border-radius: 10px;
+      width: 90%;
+      max-width: 600px;
+      color: white;
+    }
+
+    .contact_us h2 {
+      font-size: 35px;
+      font-weight: 800;
+      margin-bottom: 30px;
+      text-align: center;
+    }
+
+    .contact_us form {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    .contact_us input,
+    .contact_us textarea {
+      padding: 10px;
+      border: none;
+      border-radius: 5px;
+      width: 100%;
+    }
+
+    .contact_us input:focus,
+    .contact_us textarea:focus {
+      outline: none;
+    }
+
+    .contact_us button {
+      background-color: #00b2eb;
+      color: white;
+      border: none;
+      padding: 15px;
+      border-radius: 10px;
+      font-size: 16px;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+
+    .contact_us button:hover {
+      background-color: #009cd1;
+    }
+
+    .contact_us .back {
+      display: block;
+      margin-top: 20px;
+      text-align: center;
+      color: white;
+      text-decoration: none;
+      background-color: #00b2eb;
+      padding: 10px;
+      border-radius: 10px;
+      transition: background-color 0.3s;
+    }
+
+    .contact_us .back:hover {
+      background-color: #009cd1;
+    }
+  </style>
+</head>
+<body>
+  <div class="contact_us">
+    <h2>Contact</h2>
+    <form id="contactForm">
+      <input type="text" id="contactName" placeholder="Name" required />
+      <input type="email" id="contactEmail" placeholder="Email" required />
+      <textarea id="contactMessage" placeholder="Your message" required></textarea>
+      <button type="submit">Send</button>
+    </form>
+    <a class="back" href="Home.html">Back To Dashboard</a>
+  </div>
+  <script>
+    const api = "http://localhost:5000";
+
+    document.getElementById("contactForm").addEventListener("submit", async (e) => {
+      e.preventDefault();
+      
+      const name = document.getElementById("contactName").value;
+      const email = document.getElementById("contactEmail").value;
+      const message = document.getElementById("contactMessage").value;
+
+      try {
+        const res = await fetch(`${api}/contact`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ name, email, message })
+        });
+
+        const data = await res.json();
+        alert(data.message);
+        document.getElementById("contactForm").reset();
+      } catch (error) {
+        alert("Error sending message.");
+        console.error("Contact form error:", error);
+      }
+    });
+  </script>
+</body>
+</html>
