@@ -1,0 +1,578 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About Us</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Times New Roman', Times, serif;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+        }
+
+        /* Header */
+        header {
+            background-color: rgb(61, 59, 59);
+            color: white;
+            padding: 10px 0;
+            position: fixed;
+            width: 100%;
+            z-index: 100;
+            box-shadow: 0 2px 2px rgba(212, 203, 203, 0.2);
+        }
+
+        nav {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 0 20px;
+            flex-wrap: wrap;
+        }
+
+        .logo {
+            text-align: center;        }
+
+        .nav-links {
+            list-style: none;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .nav-links li {
+            margin: 0;
+        }
+
+        .nav-links a {
+            color: white;
+            padding: 10px 12px;
+            font-weight: bold;
+            text-decoration: none;
+            font-size: 18px;
+        }
+
+        .nav-links a:hover {
+            background-color: #ffffff;
+            border-radius: 4px;
+            color: rgb(24, 21, 21);
+        }
+
+        .login-btn {
+            background-color: #fcba2b;
+            color: #000000;
+            font-weight: bold;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 10px;
+            padding: 4px 10px;
+            width: 60px;
+            height: 40px;
+            margin-bottom: 10px;
+        }
+
+        .login-btn:hover {
+            background-color: #fdea7e;
+        }
+
+        .nav-links a:hover,
+    .nav-links a.active {  /* 🔹 Active style added */
+      background-color: #edf8ed;
+      border-radius: 4px;
+      color: rgb(24, 21, 21);
+    }
+        /* About Section */
+        .about {
+            background: url('https://www.transparenttextures.com/patterns/white-wall-3.png');
+            background-color: #e0eae0;
+            background-blend-mode: overlay;
+            padding: 120px 0 40px 0;
+            text-align: center;
+            border-top: 5px solid #4a4d4a;
+            position: relative;
+        }
+
+        .about::before {
+            content: "";
+            background-image: url('https://www.transparenttextures.com/patterns/concrete-wall.png');
+            opacity: 0.2;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            position: absolute;
+            z-index: 0;
+        }
+
+        .about h1 {
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .about p {
+            font-size: 1rem;
+            color: #323030;
+            max-width: 800px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 1;
+        }
+
+        .about-info {
+            margin: 2rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: left;
+            position: relative;
+            z-index: 1;
+        }
+
+        .about-img {
+            flex: 1;
+            max-width: 40%;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            background: white;
+            margin-right: 2rem;
+        }
+
+        .about-img img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .about-info > div {
+            flex: 1;
+            background: rgba(255, 255, 255, 0.85);
+            padding: 1.5rem;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .about-info p {
+            font-size: 1.3rem;
+            text-align: justify;
+        }
+
+        button {
+            border: none;
+            outline: 0;
+            padding: 10px;
+            margin-top: 1.5rem;
+            font-size: 1rem;
+            color: white;
+            background-color: #fcba2b;
+            cursor: pointer;
+            width: 15rem;
+            border-radius: 4px;
+        }
+
+        button:hover {
+            background-color: #ffe240;
+        }
+
+        /* Team Section */
+        .team {
+            padding: 30px 0;
+            text-align: center;
+        }
+
+        .team h1 {
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+        }
+
+        .team-cards {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 15px;
+        }
+
+        .card {
+            background-color: white;
+            border-radius: 6px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.5);
+            overflow: hidden;
+            transition: transform 0.2s, box-shadow 0.2s;
+            width: 18rem;
+            height: 25rem;
+            margin-top: 10px;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 12px rgba(0, 0, 0, 0.5);
+        }
+
+        .card-img {
+            width: 100%;
+            height: 12rem;
+        }
+
+        .card-img img {
+            width: 100%;
+            height: 100%;
+            object-fit: fill;
+        }
+
+        .card-info button {
+            margin: 2rem 1rem;
+        }
+
+        .card-name {
+            font-size: 2rem;
+            margin: 10px 0;
+        }
+
+        .card-role {
+            font-size: 1rem;
+            color: #888;
+        }
+
+        .card-email {
+            font-size: 1rem;
+            color: #555;
+        }
+
+        footer {
+            background-color: #222;
+            color: white;
+            text-align: center;
+            padding: 20px 0;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            nav {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .nav-links {
+                flex-direction: column;
+                gap: 10px;
+                padding-top: 10px;
+            }
+
+            .about-info {
+                flex-direction: column;
+            }
+
+            .about-img {
+                max-width: 80%;
+                margin: 0 auto 1rem;
+            }
+
+            .about-info > div {
+                margin: 1rem;
+            }
+
+            .about h1 {
+                font-size: 2rem;
+            }
+        }
+
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: "Poppins", sans-serif;
+      background: #f2f2f2;
+    }
+    .footer {
+  background: #0b0849;
+  color: #fff;
+  padding: 40px 0;
+  font-size: 14px;
+}
+
+.footer-container {
+  max-width: 1200px;
+  margin: auto;
+  padding: 0 30px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+}
+
+.footer-col {
+  flex: 1 1 200px;
+  margin: 15px;
+  color: #fcba2b;;
+}
+
+.footer h4 {
+  font-size: 18px;
+  margin-bottom: 20px;
+  font-weight: 600;
+}
+
+.footer h4::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  bottom: -6px;
+  width: 40px;
+  height: 2px;
+  background: #fff;
+}
+
+.footer ul {
+  list-style: none;
+  padding: 0;
+}
+
+.footer ul li {
+  margin-bottom: 12px;
+}
+
+.footer ul li a {
+  color: #ccc;
+  text-decoration: none;
+  transition: 0.3s;
+}
+
+.footer ul li a:hover {
+  color: #fff;
+  padding-left: 5px;
+}
+
+.footer .social-icons {
+  margin-top: 20px;
+}
+
+.footer .social-icons a {
+  display: inline-block;
+  height: 40px;
+  width: 40px;
+  background: #1a1a5e;
+  color: #fff;
+  text-align: center;
+  line-height: 40px;
+  margin-right: 10px;
+  border-radius: 50%;
+  transition: 0.3s;
+}
+
+.footer .social-icons a:hover {
+  background: #fff;
+  color: #0b0849;
+}
+
+.footer .subscribe-form {
+  display: flex;
+  flex-direction: column;
+}
+
+.footer .subscribe-form input[type="email"] {
+  padding: 10px;
+  margin-bottom: 10px;
+  border: none;
+  border-radius: 4px;
+  outline: none;
+}
+
+.footer .subscribe-form button {
+  padding: 10px;
+  border: none;
+  border-radius: 4px;
+  background: #fff;
+  color: #0b0849;
+  font-weight: 600;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.footer .subscribe-form button:hover {
+  background: #f2f2f2;
+}
+
+.footer-bottom {
+  text-align: center;
+  padding: 25px;
+  font-size: 14px;
+  margin-top: 30px;
+  background-color: #fcba2b;
+}
+
+.footer-bottom a {
+  color: #ccc;
+  text-decoration: none;
+  margin: 0 10px;
+}
+
+.footer-bottom a:hover {
+  color: #fff;
+}
+
+@media (max-width: 768px) {
+  .footer-container {
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .footer-col {
+    margin: 20px 0;
+  }
+
+  .footer .subscribe-form {
+    align-items: center;
+  }
+
+  .footer .subscribe-form input,
+  .footer .subscribe-form button {
+    width: 80%;
+  }
+}
+
+    </style>
+</head>
+<body>
+
+    <!-- Header / Navbar -->
+    <header>
+        <nav>
+            <div class="logo"><img src="logo.png" height="50px" width="160px"></div>
+            <ul class="nav-links">
+                <li><a href="Home.html">Home</a></li>
+                <li><a href="about.html" class="active">About</a></li>
+                <li><a href="tutorial.html">Tutorial</a></li>
+                <li><a href="contact.html">Contact</a></li>
+                <li><button class="login-btn">Login</button></li>
+            </ul>
+        </nav>
+    </header>
+
+    <!-- About Section -->
+    <section class="about">
+        <h1>About Us</h1>
+        <p style="font-weight: bold">Fitness leading platform...</p>
+        <div class="about-info">
+            <div class="about-img">
+                <img src="abc.webp" alt="About Image">
+            </div>
+            <div>
+                <p>Welcome to FitTrack, your all-in-one solution for monitoring and improving your fitness journey.
+                    Our mission is to empower individuals to achieve their health goals through smart tracking,
+                    personalized insights, and a user-friendly platform. Whether you're a beginner or a fitness
+                    enthusiast, FitTrack helps you log workouts, monitor nutrition, and track progress—all in one place.
+                    At FitTrack, we believe fitness is not just a goal—it's a lifestyle. Let’s move forward, one step at a time.</p>
+                <button>Read More...</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Team Section -->
+    <section class="team">
+        <h1>Meet Our Team</h1>
+        <div class="team-cards">
+            <div class="card">
+                <div class="card-img">
+                    <img src="img3.jpg" alt="User 1">
+                </div>
+                <div class="card-info">
+                    <h2 class="card-name">Nikita Jadhav</h2>
+                    <p class="card-role">Fitness Trainer</p>
+                    <p class="card-email">niki12@gmail.com.com</p>
+                    <p><button class="button">Contact</button></p>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-img">
+                    <img src="img1.jpg" alt="User 2">
+                </div>
+                <div class="card-info">
+                    <h2 class="card-name">Omkar Jagtap</h2>
+                    <p class="card-role">Fitness Trainer</p>
+                    <p class="card-email">omkar4545@gmail.com</p>
+                    <p><button class="button">Contact</button></p>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-img">
+                    <img src="img2.jpg" alt="User 3">
+                </div>
+                <div class="card-info">
+                    <h2 class="card-name">Rahul Gupta</h2>
+                    <p class="card-role">Fitness Trainer</p>
+                    <p class="card-email">rahul12@gmail.com</p>
+                    <p><button class="button">Contact</button></p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+ 
+<!-- Footer -->
+<footer class="footer">
+  <div class="footer-container">
+    <div class="footer-col">
+      <h4>Company</h4>
+      <ul>
+        <li><a href="#">Home</a></li>
+        <li><a href="#">About US</a></li>
+        <li><a href="#">Tutorial</a></li>
+        <li><a href="#">ContactUs</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Service</h4>
+      <ul>
+        <li><a href="#">Ladies Trainer 1</a></li>
+        <li><a href="#">Mens Trainer</a> </li>
+
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Account</h4>
+      <ul>
+        <li><a href="#">Profile</a></li>
+        <li><a href="#">My Account</a></li>
+        <li><a href="#">Preferences</a></li>
+        <li><a href="#">Purchase</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Support</h4>
+      <ul>
+        <li><a href="#">Contact</a></li>
+       
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Subscribe us</h4>
+      <form class="subscribe-form">
+        <input type="email" placeholder="Enter your email" required />
+        <button type="submit">Subscribe</button>
+      </form>
+      <div class="social-icons">
+        <a href="#"><i class="fab fa-facebook-f"></i></a>
+        <a href="#"><i class="fab fa-twitter"></i></a>
+        <a href="#"><i class="fab fa-instagram"></i></a>
+        <a href="#"><i class="fab fa-linkedin-in"></i></a>
+        <a href="#"><i class="fab fa-youtube"></i></a>
+      </div>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <p>&copy; 2025 . All rights reserved.</p>
+    <a href="#">Privacy policy</a> |<a href="#">Terms & condition</a>
+  </div>
+</footer>
+
+
+
+</body>
+</html>
