@@ -1,0 +1,718 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Fitness Tracker Dashboard</title>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <style>
+    body {
+      font-family: 'Times New Roman', Times, serif;
+      background-color: #f8f9fa;
+      margin: 0;
+      padding: 0;
+      color: #343a40;
+    }
+
+    .dashboard {
+      max-width: 1200px;
+      margin: 30px auto;
+      padding: 20px;
+    }
+
+    .cards {
+      display: flex;
+      gap: 20px;
+      flex-wrap: wrap;
+      margin-bottom: 20px;
+    }
+
+    .card {
+      flex: 1 1 250px;
+      background: #ffffff;
+      padding: 20px;
+      border-radius: 12px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.12);
+      transition: box-shadow 0.3s ease;
+    }
+    .card:hover {
+      box-shadow: 0 4px 12px rgba(0,0,0,0.16);
+    }
+
+    .card h3 {
+      margin: 0 0 10px;
+      font-size: 20px;
+      color: #212529;
+    }
+
+    .card p {
+      font-size: 24px;
+      color: #0d6efd; /* professional blue */
+      margin: 0;
+    }
+
+    .card p.subtitle {
+      font-size: 14px;
+      color: #6c757d; /* muted text */
+      margin-bottom: 6px;
+      font-weight: 500;
+    }
+
+    .button-group {
+      margin-bottom: 30px;
+      display: flex;
+      gap: 15px;
+      flex-wrap: wrap;
+    }
+
+    button {
+      padding: 12px 24px;
+      font-size: 18px;
+      border-radius: 8px;
+      border: none;
+      cursor: pointer;
+      box-shadow: 0 3px 6px rgba(0,0,0,0.1);
+      font-weight: 600;
+      transition: background-color 0.3s ease, box-shadow 0.3s ease;
+      color: #fff;
+    }
+
+    #openFormBtn {
+      background-color: #0d6efd; /* bootstrap primary blue */
+      box-shadow: 0 3px 8px rgba(13, 110, 253, 0.5);
+    }
+    #openFormBtn:hover {
+      background-color: #0843c5;
+      box-shadow: 0 5px 12px rgba(8, 67, 197, 0.7);
+    }
+
+    #deleteAllBtn {
+      background-color: #dc3545; /* bootstrap danger red */
+      box-shadow: 0 3px 8px rgba(220, 53, 69, 0.5);
+    }
+    #deleteAllBtn:hover {
+      background-color: #a92733;
+      box-shadow: 0 5px 12px rgba(169, 39, 51, 0.7);
+    }
+
+    .chart-container {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 20px;
+    }
+
+    .chart-box {
+      flex: 1 1 300px;
+      min-width: 280px;
+      max-width: 400px;
+      height: 300px;
+      background: #ffffff;
+      padding: 15px;
+      border-radius: 12px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.12);
+      transition: box-shadow 0.3s ease;
+    }
+    .chart-box:hover {
+      box-shadow: 0 4px 12px rgba(0,0,0,0.16);
+    }
+
+    canvas {
+      width: 100% !important;
+      height: 100% !important;
+    }
+
+    .modal {
+      display: none;
+      position: fixed;
+      z-index: 1000;
+      left: 0; top: 0;
+      width: 100%;
+      height: 100%;
+      overflow: auto;
+      background-color: rgba(33, 37, 41, 0.6);
+    }
+
+    .modal-content {
+      background-color: #fff;
+      margin: 10% auto;
+      padding: 25px 30px;
+      border-radius: 12px;
+      width: 400px;
+      min-height: 450px;
+      box-shadow: 0 6px 18px rgba(0,0,0,0.25);
+      position: relative;
+    }
+
+    .modal-content h3 {
+      margin-top: 0;
+      color: #212529;
+      font-weight: 700;
+    }
+
+    .modal-content input,
+    .modal-content select,
+    .modal-content button {
+      width: 100%;
+      margin-bottom: 15px;
+      padding: 12px 14px;
+      border: 1.5px solid #ced4da;
+      border-radius: 6px;
+      font-size: 16px;
+      color: #495057;
+      transition: border-color 0.3s ease;
+      font-weight: 500;
+    }
+    .modal-content input:focus,
+    .modal-content select:focus {
+      border-color: #0d6efd;
+      outline: none;
+      box-shadow: 0 0 6px rgba(13, 110, 253, 0.5);
+    }
+
+    .modal-content button {
+      background-color: #0d6efd;
+      color: white;
+      border: none;
+      cursor: pointer;
+      font-weight: 600;
+      box-shadow: 0 3px 6px rgba(13,110,253,0.5);
+      transition: background-color 0.3s ease, box-shadow 0.3s ease;
+    }
+    .modal-content button:hover {
+      background-color: #0843c5;
+      box-shadow: 0 5px 10px rgba(8,67,197,0.7);
+    }
+    .button-group, .btn{
+      color: white;
+      
+    }
+    .close-btn {
+      position: absolute;
+      top: 10px; right: 15px;
+      font-size: 26px;
+      font-weight: bold;
+      color: #adb5bd;
+      cursor: pointer;
+      transition: color 0.3s ease;
+    }
+    .close-btn:hover {
+      color: #495057;
+    }
+
+    #recentWorkout {
+      margin-top: 30px;
+      background: #ffffff;
+      padding: 20px 25px;
+      border-radius: 12px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.12);
+      display: none;
+      color: #212529;
+    }
+    #recentWorkout h4 {
+      margin-bottom: 12px;
+      font-weight: 700;
+      color: #0d6efd;
+    }
+
+    /* Table styles */
+    #workoutTable {
+      margin-top: 30px;
+      width: 100%;
+      border-collapse: collapse;
+      background: #ffffff;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.12);
+      border-radius: 12px;
+      overflow: hidden;
+      color: #212529;
+    }
+
+    #workoutTable th, #workoutTable td {
+      padding: 14px 18px;
+      text-align: center;
+      border-bottom: 1px solid #e9ecef;
+      font-weight: 500;
+    }
+
+    #workoutTable th {
+      background-color: #0d6efd;
+      color: white;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      font-size: 14px;
+    }
+
+    #workoutTable tr:nth-child(even) {
+      background-color: #f8f9fa;
+    }
+
+    .delete-btn {
+      background-color: #dc3545;
+      color: white;
+      border: none;
+      padding: 8px 14px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 14px;
+      font-weight: 600;
+      transition: background-color 0.3s ease;
+    }
+
+    .delete-btn:hover {
+      background-color: #a71d2a;
+    }
+    button {
+  background-color: #28a745; /* Green */
+  color: white;
+  border: none;
+  padding: 12px 24px;
+  font-size: 16px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+button:hover {
+  background-color: #218838; /* Darker green */
+  transform: scale(1.05);
+}
+
+  </style>
+</head>
+<body>
+  <div class="dashboard">
+    <div class="cards">
+      <div class="card">
+        <h3>Calories Burned</h3>
+        <p class="subtitle">Calories burned today</p>
+        <p id="caloriesTotal">0 kcal</p>
+      </div>
+      <div class="card">
+        <h3>Workouts</h3>
+        <p class="subtitle">Workout today</p>
+        <p id="workoutsTotal">0</p>
+      </div>
+      <div class="card">
+        <h3>Average Calories</h3>
+        <p id="averageCalories">0 kcal</p>
+      </div>
+    </div>
+
+    <div class="button-group">
+      <button id="openFormBtn">+ Add Workout</button>
+      <button id="deleteAllBtn">Delete All Workouts</button>
+      <button onclick="exportWorkoutsToCSV(workouts)">Export Workouts to CSV</button>
+      <button id="btn"><a href="Home.html">Back To Dashboard</a></button>
+    </div>
+
+    <div class="chart-container">
+      <div class="chart-box">
+        <canvas id="barChart"></canvas>
+      </div>
+      <div class="chart-box">
+        <canvas id="pieChart"></canvas>
+      </div>
+      <div class="chart-box">
+        <canvas id="weeklyBarChart"></canvas>
+      </div>
+    </div>
+
+    <div id="recentWorkout">
+      <h4>Last Workout Added</h4>
+      <p><strong>Workout:</strong> <span id="recentName"></span></p>
+      <p><strong>Calories Burned:</strong> <span id="recentCalories"></span> kcal</p>
+      <p><strong>Duration:</strong> <span id="recentDuration"></span> minutes</p>
+      <p><strong>Date:</strong> <span id="recentDate"></span></p>
+    </div>
+
+    <!-- Workout Table -->
+    <table id="workoutTable">
+      <thead>
+        <tr>
+          <th>Workout</th>
+          <th>Calories</th>
+          <th>Duration</th>
+          <th>Date</th>
+          <th>Delete</th>
+        </tr>
+      </thead>
+      <tbody id="workoutTableBody"></tbody>
+    </table>
+  </div>
+
+  <!-- Modal -->
+  <div id="modal" class="modal">
+    <div class="modal-content">
+      <span class="close-btn" id="closeFormBtn">&times;</span>
+      <form id="workoutForm">
+        <h3>Add New Workout</h3>
+        <select id="name" required>
+          <option value="" disabled selected>Select Workout</option>
+          <option value="Running">Running</option>
+          <option value="Cycling">Cycling</option>
+          <option value="Swimming">Swimming</option>
+          <option value="Push-ups">Push-ups</option>
+          <option value="Squats">Squats</option>
+          <option value="Deadlifts">Deadlifts</option>
+          <option value="Yoga">Yoga</option>
+          <option value="Plank">Plank</option>
+          <option value="Jump Rope">Jump Rope</option>
+        </select>
+        <input type="number" id="calories" placeholder="Calories Burned" min="1" required />
+        <input type="number" id="duration" placeholder="Duration (minutes)" min="1" required />
+        <input type="date" id="date" required />
+        <button type="submit">Add Workout</button>
+      </form>
+      
+    </div>
+    
+  </div>
+  
+
+  <script>
+    // Elements
+    const openFormBtn = document.getElementById('openFormBtn');
+    const modal = document.getElementById('modal');
+    const closeFormBtn = document.getElementById('closeFormBtn');
+    const workoutForm = document.getElementById('workoutForm');
+    const caloriesTotalEl = document.getElementById('caloriesTotal');
+    const workoutsTotalEl = document.getElementById('workoutsTotal');
+    const averageCaloriesEl = document.getElementById('averageCalories');
+    const recentWorkoutEl = document.getElementById('recentWorkout');
+    const recentName = document.getElementById('recentName');
+    const recentCalories = document.getElementById('recentCalories');
+    const recentDuration = document.getElementById('recentDuration');
+    const recentDate = document.getElementById('recentDate');
+    const workoutTableBody = document.getElementById('workoutTableBody');
+    const deleteAllBtn = document.getElementById('deleteAllBtn');
+
+    // Workout data
+    let workouts = JSON.parse(localStorage.getItem('workouts')) || [];
+
+    // Show modal
+    openFormBtn.addEventListener('click', () => {
+      modal.style.display = 'block';
+    });
+
+    // Close modal
+    closeFormBtn.addEventListener('click', () => {
+      modal.style.display = 'none';
+      workoutForm.reset();
+    });
+
+    // Close modal when clicking outside the modal content
+    window.addEventListener('click', e => {
+      if (e.target === modal) {
+        modal.style.display = 'none';
+        workoutForm.reset();
+      }
+    });
+
+    // Add new workout
+    workoutForm.addEventListener('submit', e => {
+      e.preventDefault();
+
+      const name = document.getElementById('name').value;
+      const calories = parseInt(document.getElementById('calories').value);
+      const duration = parseInt(document.getElementById('duration').value);
+      const date = document.getElementById('date').value;
+
+      if (!name || !calories || !duration || !date) {
+        alert('Please fill in all fields correctly.');
+        return;
+      }
+
+      const workout = {
+        id: Date.now(),
+        name,
+        calories,
+        duration,
+        date,
+      };
+
+      workouts.push(workout);
+      localStorage.setItem('workouts', JSON.stringify(workouts));
+
+      updateDashboard();
+      renderTable();
+      updateRecentWorkout(workout);
+
+      workoutForm.reset();
+      modal.style.display = 'none';
+    });
+
+    // Delete workout by id
+    function deleteWorkout(id) {
+      workouts = workouts.filter(w => w.id !== id);
+      localStorage.setItem('workouts', JSON.stringify(workouts));
+      updateDashboard();
+      renderTable();
+      if (workouts.length === 0) {
+        recentWorkoutEl.style.display = 'none';
+      } else {
+        updateRecentWorkout(workouts[workouts.length - 1]);
+      }
+    }
+
+    // Delete all workouts
+    deleteAllBtn.addEventListener('click', () => {
+      if (confirm('Are you sure you want to delete all workouts?')) {
+        workouts = [];
+        localStorage.removeItem('workouts');
+        updateDashboard();
+        renderTable();
+        recentWorkoutEl.style.display = 'none';
+      }
+    });
+
+    // Update dashboard cards
+    function updateDashboard() {
+      const totalCalories = workouts.reduce((sum, w) => sum + w.calories, 0);
+      const totalWorkouts = workouts.length;
+      const avgCalories = totalWorkouts ? Math.round(totalCalories / totalWorkouts) : 0;
+
+      caloriesTotalEl.textContent = `${totalCalories} kcal`;
+      workoutsTotalEl.textContent = totalWorkouts;
+      averageCaloriesEl.textContent = `${avgCalories} kcal`;
+
+      updateCharts();
+    }
+
+    // Render workout table
+    function renderTable() {
+      workoutTableBody.innerHTML = '';
+      workouts.forEach(w => {
+        const tr = document.createElement('tr');
+
+        const nameTd = document.createElement('td');
+        nameTd.textContent = w.name;
+        tr.appendChild(nameTd);
+
+        const caloriesTd = document.createElement('td');
+        caloriesTd.textContent = w.calories;
+        tr.appendChild(caloriesTd);
+
+        const durationTd = document.createElement('td');
+        durationTd.textContent = w.duration;
+        tr.appendChild(durationTd);
+
+        const dateTd = document.createElement('td');
+        dateTd.textContent = new Date(w.date).toLocaleDateString();
+        tr.appendChild(dateTd);
+
+        const deleteTd = document.createElement('td');
+        const delBtn = document.createElement('button');
+        delBtn.className = 'delete-btn';
+        delBtn.textContent = 'Delete';
+        delBtn.onclick = () => deleteWorkout(w.id);
+        deleteTd.appendChild(delBtn);
+        tr.appendChild(deleteTd);
+
+        workoutTableBody.appendChild(tr);
+      });
+    }
+
+    // Update recent workout display
+    function updateRecentWorkout(workout) {
+      recentName.textContent = workout.name;
+      recentCalories.textContent = workout.calories;
+      recentDuration.textContent = workout.duration;
+      recentDate.textContent = new Date(workout.date).toLocaleDateString();
+      recentWorkoutEl.style.display = 'block';
+    }
+
+    // Chart.js charts
+    let barChart, pieChart, weeklyBarChart;
+
+    function updateCharts() {
+      // Group calories by workout type
+      const caloriesByWorkout = {};
+      workouts.forEach(w => {
+        caloriesByWorkout[w.name] = (caloriesByWorkout[w.name] || 0) + w.calories;
+      });
+
+      const barLabels = Object.keys(caloriesByWorkout);
+      const barData = Object.values(caloriesByWorkout);
+
+      // Pie chart data: count by workout type
+      const countsByWorkout = {};
+      workouts.forEach(w => {
+        countsByWorkout[w.name] = (countsByWorkout[w.name] || 0) + 1;
+      });
+      const pieLabels = Object.keys(countsByWorkout);
+      const pieData = Object.values(countsByWorkout);
+
+      // Weekly calories burned (last 7 days)
+      const today = new Date();
+      const days = [];
+      const weeklyCalories = [];
+
+      for (let i = 6; i >= 0; i--) {
+        const day = new Date(today);
+        day.setDate(today.getDate() - i);
+        days.push(day.toLocaleDateString(undefined, { weekday: 'short' }));
+        const dayStr = day.toISOString().split('T')[0];
+        const totalDayCalories = workouts
+          .filter(w => w.date === dayStr)
+          .reduce((sum, w) => sum + w.calories, 0);
+        weeklyCalories.push(totalDayCalories);
+      }
+
+      // Destroy previous charts to avoid duplication
+      if (barChart) barChart.destroy();
+      if (pieChart) pieChart.destroy();
+      if (weeklyBarChart) weeklyBarChart.destroy();
+
+      // Bar Chart: Calories by Workout Type
+      const ctxBar = document.getElementById('barChart').getContext('2d');
+      barChart = new Chart(ctxBar, {
+        type: 'bar',
+        data: {
+          labels: barLabels,
+          datasets: [{
+            label: 'Calories Burned',
+            data: barData,
+            backgroundColor: 'rgba(13, 110, 253, 0.7)',
+            borderColor: 'rgba(13, 110, 253, 1)',
+            borderWidth: 1,
+            borderRadius: 6,
+          }]
+        },
+        options: {
+          responsive: true,
+          plugins: {
+            legend: { display: false },
+            title: {
+              display: true,
+              text: 'Calories Burned by Workout',
+              color: '#212529',
+              font: { size: 18, weight: 'bold' }
+            }
+          },
+          scales: {
+            y: {
+              beginAtZero: true,
+              ticks: { color: '#212529' }
+            },
+            x: {
+              ticks: { color: '#212529' }
+            }
+          }
+        }
+      });
+
+      // Pie Chart: Workout Counts by Type
+      const ctxPie = document.getElementById('pieChart').getContext('2d');
+      const pieColors = [
+        '#0d6efd', '#6f42c1', '#198754', '#dc3545', '#fd7e14', '#0dcaf0', '#6610f2', '#20c997', '#ffc107'
+      ];
+      pieChart = new Chart(ctxPie, {
+        type: 'pie',
+        data: {
+          labels: pieLabels,
+          datasets: [{
+            data: pieData,
+            backgroundColor: pieColors.slice(0, pieLabels.length),
+            borderColor: '#fff',
+            borderWidth: 2,
+          }]
+        },
+        options: {
+          responsive: true,
+          plugins: {
+            legend: {
+              position: 'bottom',
+              labels: { color: '#212529', font: { size: 14 } }
+            },
+            title: {
+              display: true,
+              text: 'Workouts Distribution',
+              color: '#212529',
+              font: { size: 18, weight: 'bold' }
+            }
+          }
+        }
+      });
+
+      // Weekly Bar Chart: Calories burned last 7 days
+      const ctxWeekly = document.getElementById('weeklyBarChart').getContext('2d');
+      weeklyBarChart = new Chart(ctxWeekly, {
+        type: 'bar',
+        data: {
+          labels: days,
+          datasets: [{
+            label: 'Calories Burned',
+            data: weeklyCalories,
+            backgroundColor: 'rgba(13, 110, 253, 0.7)',
+            borderColor: 'rgba(13, 110, 253, 1)',
+            borderWidth: 1,
+            borderRadius: 6,
+          }]
+        },
+        options: {
+          responsive: true,
+          plugins: {
+            legend: { display: false },
+            title: {
+              display: true,
+              text: 'Calories Burned Last 7 Days',
+              color: '#212529',
+              font: { size: 18, weight: 'bold' }
+            }
+          },
+          scales: {
+            y: {
+              beginAtZero: true,
+              ticks: { color: '#212529' }
+            },
+            x: {
+              ticks: { color: '#212529' }
+            }
+          }
+        }
+      });
+    }
+
+    // Initialize
+    function init() {
+      updateDashboard();
+      renderTable();
+      if (workouts.length > 0) {
+        updateRecentWorkout(workouts[workouts.length - 1]);
+      }
+    }
+
+    init();
+    function exportWorkoutsToCSV(workouts) {
+  // Define CSV headers
+  const headers = ['Date', 'Type', 'Duration (min)', 'Calories Burned'];
+
+  // Map workout data to CSV rows
+  const rows = workouts.map(w => [
+    w.date,
+    w.type,
+    w.duration,
+    w.calories
+  ]);
+
+  // Combine headers and rows into CSV string
+  const csvContent = [
+    headers.join(','), // header row
+    ...rows.map(row => row.join(',')) // data rows
+  ].join('\n');
+
+  // Create a Blob and trigger download
+  const blob = new Blob([csvContent], { type: 'text/csv' });
+  const url = URL.createObjectURL(blob);
+
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = 'workouts.csv';
+  a.click();
+
+  URL.revokeObjectURL(url);
+}
+
+
+  </script>
+</body>
+</html>
