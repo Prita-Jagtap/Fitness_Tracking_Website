@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Home</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Times New Roman', Times, serif;
+    }
+
+    body {
+      font-family: Arial, sans-serif;
+    }
+
+    header {
+      background-color: rgb(61, 59, 59);
+      color: white;
+      padding: 10px 0;
+      box-shadow: 0 2px 2px rgba(212, 203, 203, 0.2);
+    }
+
+    nav {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 0 20px;
+      flex-wrap: wrap;
+      margin-bottom: 1px;
+    }
+
+    .logo {
+      text-align: center;
+    }
+
+    .nav-links {
+      list-style: none;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .nav-links li {
+      margin: 0;
+    }
+
+    .nav-links a {
+      color: white;
+      padding: 10px 12px;
+      font-weight: bold;
+      text-decoration: none;
+      font-size: 21px;
+      transition: background-color 0.3s, color 0.3s;
+    }
+
+    .nav-links a:hover,
+    .nav-links a.active {  /* 🔹 Active style added */
+      background-color: #edf8ed;
+      border-radius: 4px;
+      color: rgb(24, 21, 21);
+    }
+
+    .login-btn {
+      background-color: #fcba2b;
+      color: #000000;
+      font-weight: bold;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 10px;
+      padding: 4px 10px;
+      width: 60px;
+      height: 40px;
+      margin-bottom: 10px;
+    }
+
+    .login-btn:hover {
+      background-color: #fdea7e;
+    }
+
+    .image-section {
+      position: relative;
+      width: 100%;
+      margin-top: 1px;
+      margin-bottom: 1px;
+    }
+
+    .image-section img {
+      width: 100%;
+      height: auto;
+      display: block;
+    }
+
+    .center-button {
+      position: absolute;
+      top: 48%;
+      left: 10%;
+      transform: translate(-50%, -50%);
+      background-color: #fcba2b;
+      color: #000;
+      border: none;
+      padding: 20px 40px;
+      font-size: 18px;
+      font-weight: bold;
+      border-radius: 6px;
+      cursor: pointer;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+      transition: background-color 0.3s ease;
+    }
+
+    .center-button:hover {
+      background-color: #f5a400;
+      color: #fff;
+    }
+
+    .footer {
+      background: #0b0849;
+      color: #fff;
+      padding: 40px 0;
+      font-size: 14px;
+    }
+
+    .footer-container {
+      max-width: 1200px;
+      margin: auto;
+      padding: 0 30px;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+    }
+
+    .footer-col {
+      flex: 1 1 200px;
+      margin: 15px;
+      color: #f5a400;
+    }
+
+    .footer h4 {
+      font-size: 18px;
+      margin-bottom: 20px;
+      font-weight: 600;
+      position: relative;
+    }
+
+    .footer h4::after {
+      content: '';
+      position: absolute;
+      left: 0;
+      bottom: -6px;
+      width: 40px;
+      height: 2px;
+      background: #fff;
+    }
+
+    .footer ul {
+      list-style: none;
+      padding: 0;
+    }
+
+    .footer ul li {
+      margin-bottom: 12px;
+    }
+
+    .footer ul li a {
+      color: #ccc;
+      text-decoration: none;
+      transition: 0.3s;
+    }
+
+    .footer ul li a:hover {
+      color: #fff;
+      padding-left: 5px;
+    }
+
+    .footer .social-icons {
+      margin-top: 20px;
+    }
+
+    .footer .social-icons a {
+      display: inline-block;
+      height: 40px;
+      width: 40px;
+      background: #1a1a5e;
+      color: #fff;
+      text-align: center;
+      line-height: 40px;
+      margin-right: 10px;
+      border-radius: 50%;
+      transition: 0.3s;
+    }
+
+    .footer .social-icons a:hover {
+      background: #f2f537;
+      color: #0b0849;
+    }
+
+    .footer .subscribe-form {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .footer .subscribe-form input[type="email"] {
+      padding: 10px;
+      margin-bottom: 10px;
+      border: none;
+      border-radius: 4px;
+      outline: none;
+    }
+
+    .footer .subscribe-form button {
+      padding: 10px;
+      border: none;
+      border-radius: 4px;
+      background: #fff;
+      color: #0b0849;
+      font-weight: 600;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+
+    .footer .subscribe-form button:hover {
+      background: #f2f2f2;
+    }
+
+    .footer-bottom {
+      text-align: center;
+      padding: 25px;
+      font-size: 14px;
+      margin-top: 30px;
+      background-color: rgba(252, 201, 34, 0.801);
+    }
+
+    .footer-bottom a {
+      color: #f4ff5e;
+      text-decoration: none;
+      margin: 0 10px;
+    }
+
+    .footer-bottom a:hover {
+      color: #fff;
+    }
+
+    @media (max-width: 768px) {
+      .footer-container {
+        flex-direction: column;
+        text-align: center;
+      }
+
+      .footer-col {
+        margin: 20px 0;
+      }
+
+      .footer .subscribe-form {
+        align-items: center;
+      }
+
+      .footer .subscribe-form input,
+      .footer .subscribe-form button {
+        width: 80%;
+      }
+
+      .center-button {
+        font-size: 16px;
+        padding: 10px 20px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Header / Navbar -->
+  <header>
+    <nav>
+      <div class="logo"><img src="logo.png" height="50px" width="160px"></div>
+      <ul class="nav-links">
+        <li><a href="Home.html" class="active">Home</a></li> <!-- 🔹 Active class added -->
+        <li><a href="about.html">About</a></li>
+        <li><a href="tutorial.html">Tutorial</a></li>
+        <li><a href="contact.html">Contact</a></li>
+       <li>
+  <a href="login.html" class="login-btn">Login</a>
+</li>
+
+      </ul>
+    </nav>
+  </header>
+
+  <!-- Image Section -->
+  <section class="image-section">
+    <img src="home.png" alt="Banner Image" />
+    <button class="center-button"><a href="index.html"> Started</button></a>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="footer-container">
+      <!-- Footer content unchanged -->
+      <div class="footer-col">
+        <h4>Company</h4>
+        <ul>
+          <li><a href="#">Home</a></li>
+          <li><a href="#">About US</a></li>
+          <li><a href="#">Tutorial</a></li>
+          <li><a href="#">ContactUs</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Service</h4>
+        <ul>
+          <li><a href="#">Ladies Trainer 1</a></li>
+          <li><a href="#">Mens Trainer</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Account</h4>
+        <ul>
+          <li><a href="#">Profile</a></li>
+          <li><a href="#">My Account</a></li>
+          <li><a href="#">Preferences</a></li>
+          <li><a href="#">Purchase</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Support</h4>
+        <ul>
+          <li><a href="#">Contact</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Subscribe us</h4>
+        <form class="subscribe-form">
+          <input type="email" placeholder="Enter your email" required />
+          <button type="submit">Subscribe</button>
+        </form>
+        <div class="social-icons">
+          <a href="#"><i class="fab fa-facebook-f"></i></a>
+          <a href="#"><i class="fab fa-twitter"></i></a>
+          <a href="#"><i class="fab fa-instagram"></i></a>
+          <a href="#"><i class="fab fa-linkedin-in"></i></a>
+          <a href="#"><i class="fab fa-youtube"></i></a>
+        </div>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>&copy; 2025 . All rights reserved.</p>
+      <a href="#">Privacy policy</a> |<a href="#">Terms & condition</a>
+    </div>
+  </footer>
+<script>
+  async function register() {
+    const username = document.getElementById('regUser').value;
+    const password = document.getElementById('regPass').value;
+
+    const res = await fetch('http://localhost:5000/api/auth/register', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ username, password })
+    });
+    const data = await res.json();
+    if (res.ok) {
+      localStorage.setItem('token', data.token);
+      alert('Registered successfully!');
+    } else {
+      alert(data.msg || data.errors[0].msg);
+    }
+  }
+</script>
+
+</body>
+</html>
